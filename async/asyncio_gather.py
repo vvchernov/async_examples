@@ -49,7 +49,15 @@ def main():
     start = time.perf_counter()
     math_sample_sync()
     end = time.perf_counter()
-    print("PURE TIME:", end - start)\
+    print("PURE TIME OF ONE COROUTINE:", end - start)
+
+    start = time.perf_counter()
+    for _ in range(args.number):
+        math_sample_sync()
+    end = time.perf_counter()
+    print(f"PURE TIME OF LOOP WITH {args.number} COROUTINES:", end - start)
+
+    print("\n----------------------------------------------------\n")
 
     print("ASYNCIO GATHER WITH ASYNC MATHS")
     start = time.perf_counter()
@@ -58,12 +66,16 @@ def main():
     print("FULL TIME:", end - start, "s")
     print("TIME PER COROUTINE:", (end - start)/args.number, "s")
 
+    print("\n----------------------------------------------------\n")
+
     print("ASYNCIO GATHER WITH SYNC MATHS")
     start = time.perf_counter()
     asyncio.run(test_infer("sync", args.number))
     end = time.perf_counter()
     print("FULL TIME:", end - start, "s")
     print("TIME PER COROUTINE:", (end - start)/args.number, "s")
+
+    print("\n----------------------------------------------------\n")
 
     print("ASYNCIO GATHER WITH EMBED MATHS")
     start = time.perf_counter()
