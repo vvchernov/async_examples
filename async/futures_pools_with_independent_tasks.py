@@ -63,43 +63,30 @@ def main():
     end = time.perf_counter()
     print(f"PURE TIME OF LOOP WITH {args.number} COROUTINES:", end - start, "s")
 
-    print("\n----------------------------------------------------\n")
+    executor_map = {
+        "THREAD": concurrent.futures.ThreadPoolExecutor,
+        "PROCESS": concurrent.futures.ProcessPoolExecutor,
+    }
 
-    executor = concurrent.futures.ThreadPoolExecutor(args.number)
-    print("FUTURES THREAD POOL WITH SYNC MATHS")
-    start = time.perf_counter()
-    test_infer(executor, "sync", args.number)
-    end = time.perf_counter()
-    print("FULL TIME:", end - start, "s")
-    print("TIME PER COROUTINE:", (end - start)/args.number, "s")
+    for pool_type in ["PROCESS", "THREAD"]:
+        print("\n----------------------------------------------------\n")
+        executor = executor_map[pool_type](args.number)
 
-    print("\n----------------------------------------------------\n")
+        print(f"FUTURES {pool_type} POOL WITH SYNC MATHS")
+        start = time.perf_counter()
+        test_infer(executor, "sync", args.number)
+        end = time.perf_counter()
+        print("FULL TIME:", end - start, "s")
+        print("TIME PER COROUTINE:", (end - start)/args.number, "s")
 
-    print("FUTURES THREAD POOL WITH EMBED MATHS")
-    start = time.perf_counter()
-    test_infer(executor, "embed", args.number)
-    end = time.perf_counter()
-    print("FULL TIME:", end - start, "s")
-    print("TIME PER COROUTINE:", (end - start)/args.number, "s")
+        print("\n----------------------------------------------------\n")
 
-    print("\n----------------------------------------------------\n")
-
-    executor = concurrent.futures.ProcessPoolExecutor(args.number)
-    print("FUTURES PROCESS POOL WITH SYNC MATHS")
-    start = time.perf_counter()
-    test_infer(executor, "sync", args.number)
-    end = time.perf_counter()
-    print("FULL TIME:", end - start, "s")
-    print("TIME PER COROUTINE:", (end - start)/args.number, "s")
-
-    print("\n----------------------------------------------------\n")
-
-    print("FUTURES PROCESS POOL WITH EMBED MATHS")
-    start = time.perf_counter()
-    test_infer(executor, "embed", args.number)
-    end = time.perf_counter()
-    print("FULL TIME:", end - start, "s")
-    print("TIME PER COROUTINE:", (end - start)/args.number, "s")
+        print(f"FUTURES {pool_type} POOL WITH EMBED MATHS")
+        start = time.perf_counter()
+        test_infer(executor, "embed", args.number)
+        end = time.perf_counter()
+        print("FULL TIME:", end - start, "s")
+        print("TIME PER COROUTINE:", (end - start)/args.number, "s")
 
 
 if __name__ == "__main__":
