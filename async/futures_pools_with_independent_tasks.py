@@ -21,7 +21,7 @@ coro_map = {
 }
 
 
-def test_infer(executor, coro_type: str, number = 10):
+def test_infer(executor, coro_type: str, number: int = 10):
     runner = coro_map[coro_type]
     futures = []
     parallel_results = {}
@@ -44,7 +44,7 @@ def test_infer(executor, coro_type: str, number = 10):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", "--number", type=int, default=10,
-                        help="Number of coroutines to async",)
+                        help="Number of coroutines to async")
 
     return parser.parse_args()
 
@@ -55,13 +55,13 @@ def main():
     start = time.perf_counter()
     math_sample_sync()
     end = time.perf_counter()
-    print("PURE TIME OF ONE COROUTINE:", end - start)
+    print("PURE TIME OF ONE COROUTINE:", end - start, "s")
 
     start = time.perf_counter()
     for _ in range(args.number):
         math_sample_sync()
     end = time.perf_counter()
-    print(f"PURE TIME OF LOOP WITH {args.number} COROUTINES:", end - start)
+    print(f"PURE TIME OF LOOP WITH {args.number} COROUTINES:", end - start, "s")
 
     print("\n----------------------------------------------------\n")
 
