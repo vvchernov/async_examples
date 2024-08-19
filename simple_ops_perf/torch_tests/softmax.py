@@ -9,7 +9,7 @@ def init_torch_tensor(batch_size: int = 10, length: int = 10, device: str = "cpu
 
 
 def torch_softmax(ttensor: torch.Tensor):
-  a = torch.softmax(ttensor)
+  a = torch.softmax(ttensor, dim=-1)
 
 
 def time_it(pass_str: str, setup_str: str = "", num_loop=1000000):
@@ -19,17 +19,18 @@ def time_it(pass_str: str, setup_str: str = "", num_loop=1000000):
         number=num_loop,
         globals=globals(),
     )
-    print(1e9 * time_sec / num_loop, "ns")
+    print(1e6 * time_sec / num_loop, "us")
 
 
 def base_softmax_test(op_type: Optional[str] = None, device: str = "cpu"):
   if op_type is None:
-    lengths = [10, 100, 1000, 100000]
+    lengths = [10, 100, 1000, 10000, 100000]
     num_loop = {
-      10: 1000000,
-      100: 100000,
-      1000: 10000,
-      100000: 100,
+      10: 10000000,
+      100: 1000000,
+      1000: 100000,
+      10000: 10000,
+      100000: 1000,
     }
   else:
     length = int(op_type)
@@ -42,8 +43,8 @@ def base_softmax_test(op_type: Optional[str] = None, device: str = "cpu"):
     print(f"TORCH SOFTMAX, BATCH 10, LENGTH {length}")
     time_it(
       f"torch_softmax(a)",
-      f"a = init_torch_tensor(length={length}, device={device})",
-      num_loop=num_loop[length]
+      f"a = init_torch_tensor(length={length},device='{device}')",
+      num_loop=num_loop[length],
     )
 
     print()
