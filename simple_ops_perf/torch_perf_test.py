@@ -16,6 +16,6 @@ def torch_perf_test(type: str, op_type: Optional[str] = None, device: str = "cpu
     softmax_test(op_type, device)
   else:
     raise RuntimeError(
-      f"Torch test of type {type} is not supported."
+      f"Torch test of type {type} is not supported. "
       f"{torch_types_list} types are evailable"
     )

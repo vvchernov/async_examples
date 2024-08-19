@@ -4,7 +4,10 @@ other_types_list = ["str_format"]
 
 
 def other_perf_test(type: str):
-  assert type in other_types_list,  f"{type} is not in the list: {other_types_list}"
-
   if type == "str_format":
     str_format_test()
+  else:
+    raise RuntimeError(
+      f"Other test of type {type} is not supported. "
+      f"{other_types_list} types are evailable"
+    )
